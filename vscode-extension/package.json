@@ -1,0 +1,115 @@
+{
+  "name": "learn-code",
+  "displayName": "Learn Code",
+  "description": "Fast, deterministic code explanations with context-aware prompts",
+  "publisher": "little-bear-apps",
+  "version": "0.2.0",
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": ["Other", "AI"],
+  "keywords": ["code", "explanation", "ai", "mcp", "learning", "documentation"],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "chatParticipants": [
+      {
+        "id": "learn-code",
+        "name": "learn-code",
+        "description": "Explain code selections with context-aware prompts",
+        "commands": [
+          {
+            "name": "explain",
+            "description": "Explain the current selection with length preset (micro/short/paragraph/deep)"
+          },
+          {
+            "name": "classify",
+            "description": "Classify the selected code construct"
+          }
+        ]
+      }
+    ],
+    "mcpServerDefinitionProviders": [
+      {
+        "id": "learn-code-provider",
+        "label": "Learn Code MCP Server Provider"
+      }
+    ],
+    "commands": [
+      {
+        "command": "learnCode.openSettings",
+        "title": "Learn Code: Open Settings"
+      },
+      {
+        "command": "learnCode.explain.micro",
+        "title": "Learn Code: Micro Explanation"
+      },
+      {
+        "command": "learnCode.explain.short", 
+        "title": "Learn Code: Short Explanation"
+      },
+      {
+        "command": "learnCode.explain.paragraph",
+        "title": "Learn Code: Paragraph Explanation"
+      },
+      {
+        "command": "learnCode.explain.deep",
+        "title": "Learn Code: Deep Explanation"
+      }
+    ],
+    "configuration": {
+      "title": "Learn Code",
+      "properties": {
+        "learnCode.context.enable": {
+          "type": "string",
+          "enum": ["off", "light", "full"],
+          "default": "light",
+          "description": "Workspace context level to include with requests. 'light' gathers repo branch, project type, and dependencies."
+        },
+        "learnCode.context.maxDeps": {
+          "type": "number",
+          "default": 20,
+          "minimum": 0,
+          "maximum": 50,
+          "description": "Maximum number of dependencies to include in context."
+        },
+        "learnCode.privacy.anonymizePaths": {
+          "type": "boolean",
+          "default": true,
+          "description": "Redact absolute paths in context payloads for privacy."
+        },
+        "learnCode.defaults.style": {
+          "type": "string",
+          "enum": ["micro", "short", "paragraph", "deep"],
+          "default": "short",
+          "description": "Default explanation length when no style is specified."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.95.0",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "typescript": "^5.0.0",
+    "@vscode/test-cli": "^0.0.4",
+    "@vscode/test-electron": "^2.3.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/little-bear-apps/learn-code-mcp.git"
+  },
+  "license": "MIT"
+}
