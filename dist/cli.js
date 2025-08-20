@@ -331,7 +331,8 @@ For more information, visit: https://github.com/little-bear-apps/learn-code-mcp
     }
 }
 // Main execution
-if (import.meta.url === `file://${process.argv[1]}`) {
+import { pathToFileURL } from 'url';
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
     const cli = new LearnCodeCLI();
     cli.run().catch((error) => {
         console.error('CLI failed:', error.message);
