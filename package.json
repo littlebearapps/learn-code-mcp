@@ -1,9 +1,16 @@
 {
   "name": "@learn-code/mcp",
   "version": "0.1.0",
-  "description": "Fast, deterministic code explanations through MCP with four length presets",
+  "description": "Fast, deterministic code explanations through MCP with VS Code extension and CLI. Features 4 explanation length presets, secret redaction, and workspace context integration.",
   "type": "module",
   "main": "dist/server.js",
+  "files": [
+    "dist/",
+    "vscode-extension/",
+    "docs/",
+    "README.md",
+    "CHANGELOG.md"
+  ],
   "bin": {
     "teach": "dist/cli.js"
   },
@@ -11,11 +18,17 @@
     "build": "tsc",
     "dev": "tsx src/server.ts",
     "dev:cli": "tsx src/cli.ts",
+    "dev:server": "tsx src/server.ts",
     "test": "vitest",
+    "test:cli": "./test-cli-comprehensive.sh",
+    "test:cross-platform": "node test-cross-platform.js",
+    "test:all": "npm run test:cli && npm run test:cross-platform",
+    "benchmark": "node benchmark.js",
+    "validate": "npm run test:all && npm run lint",
     "lint": "eslint src/",
     "format": "prettier --write src/",
     "clean": "rm -rf dist/",
-    "prepublishOnly": "npm run clean && npm run build"
+    "prepublishOnly": "npm run clean && npm run build && npm run validate"
   },
   "keywords": [
     "mcp",

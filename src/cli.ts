@@ -195,8 +195,13 @@ class LearnCodeCLI {
     return new Promise((resolve, reject) => {
       const serverPath = join(__dirname, 'server.js');
       
-      // Spawn MCP server
-      const server = spawn('node', [serverPath], {
+      // Spawn MCP server with memory optimization
+      const server = spawn('node', [
+        '--max-old-space-size=32',    // Limit memory to 32MB
+        '--no-compilation-cache',     // Skip V8 compilation cache for faster startup
+        '--no-lazy',                  // Compile all functions immediately
+        serverPath
+      ], {
         stdio: ['pipe', 'pipe', 'pipe']
       });
 
@@ -237,13 +242,12 @@ class LearnCodeCLI {
       // Send MCP commands to server
       const mcpCommands = this.generateMCPCommands(code, options);
       
+      // Send commands immediately without delay for better performance
       mcpCommands.forEach((command, index) => {
-        setTimeout(() => {
-          server.stdin.write(JSON.stringify(command) + '\n');
-          if (index === mcpCommands.length - 1) {
-            server.stdin.end();
-          }
-        }, index * 100);
+        server.stdin.write(JSON.stringify(command) + '\n');
+        if (index === mcpCommands.length - 1) {
+          server.stdin.end();
+        }
       });
     });
   }
