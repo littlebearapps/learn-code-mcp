@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "test-learn-code": {
+      "command": "node",
+      "args": ["/tmp/learn-code-test/diagnostic-server.js"],
+      "cwd": "/tmp/learn-code-test"
+    }
+  }
+}

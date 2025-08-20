@@ -1,0 +1,8 @@
+[
+  {
+    "key": "cmd+shift+1",
+    "command": "mcp.runPrompt",
+    "args": ["test-learn-code", "test_explain"],
+    "when": "editorTextFocus"
+  }
+]

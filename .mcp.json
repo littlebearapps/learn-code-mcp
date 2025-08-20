@@ -1,0 +1,65 @@
+{
+  "mcpServers": {
+    "git": {
+      "command": "/opt/homebrew/bin/git-mcp-server",
+      "args": []
+    },
+    "brave-search": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-brave-search"
+      ],
+      "env": {
+        "BRAVE_API_KEY": "BSAcf7QCl47R_RvwpkkKxiVP14jxup2"
+      }
+    },
+    "ccusage": {
+      "command": "ccusage",
+      "args": ["mcp"]
+    },
+    "zen": {
+      "command": "/Users/nathanschram/Library/Mobile Documents/com~apple~CloudDocs/claude-code-tools/mcp/zen-mcp-server/zen-mcp-server",
+      "args": [],
+      "cwd": "/Users/nathanschram/Library/Mobile Documents/com~apple~CloudDocs/claude-code-tools/mcp/zen/instances/instC",
+      "env": {
+        "ZEN_INSTANCE_NAME": "zen-learn-code-mcp",
+        "OPENAI_API_KEY": "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",
+        "DEFAULT_MODEL": "gpt-5",
+        "ZEN_MAX_OUTPUT_TOKENS": "1024",
+        "ZEN_MAX_INPUT_TOKENS": "12000",
+        "ZEN_MAX_RETRIES": "1",
+        "ZEN_ENABLE_SAFE_CONTINUATION": "1",
+        "ZEN_DAILY_SOFT_BUDGET_USD": "2.50",
+        "ZEN_MINUTES_RATE_LIMIT": "60",
+        "OPENAI_ALLOWED_MODELS": "gpt-5,o3-mini,o4-mini",
+        "LOG_LEVEL": "DEBUG"
+      }
+    },
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp"
+      ]
+    },
+    "mult-fetch": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@lmcc-dev/mult-fetch-mcp-server"
+      ]
+    },
+    "test-learn-code": {
+      "command": "/opt/homebrew/bin/node",
+      "args": ["/Users/nathanschram/Library/Mobile Documents/com~apple~CloudDocs/claude-code-tools/lba/apps/mcp-servers/learn-code-mcp/test-selection-mcp/diagnostic-server.js"],
+      "cwd": "/Users/nathanschram/Library/Mobile Documents/com~apple~CloudDocs/claude-code-tools/lba/apps/mcp-servers/learn-code-mcp/test-selection-mcp"
+    },
+    "learn-code-mcp": {
+      "command": "/opt/homebrew/bin/node",
+      "args": ["/Users/nathanschram/Library/Mobile Documents/com~apple~CloudDocs/claude-code-tools/lba/apps/mcp-servers/learn-code-mcp/dist/server.js"],
+      "cwd": "/Users/nathanschram/Library/Mobile Documents/com~apple~CloudDocs/claude-code-tools/lba/apps/mcp-servers/learn-code-mcp",
+      "env": {}
+    }
+  }
+}

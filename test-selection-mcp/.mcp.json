@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "test-learn-code": {
+      "command": "node",
+      "args": ["server.js"],
+      "cwd": "/Users/nathanschram/Library/Mobile Documents/com~apple~CloudDocs/claude-code-tools/lba/apps/mcp-servers/learn-code-mcp/test-selection-mcp"
+    }
+  }
+}
