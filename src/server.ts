@@ -13,7 +13,7 @@ import {
 import { SecretRedactor } from './lib/secret-redactor.js';
 import { ConstructClassifier } from './lib/construct-classifier.js';
 import { PreferencesManager } from './lib/preferences-manager.js';
-import { ResponseStreamer, createResponseStreamer } from './lib/response-streamer.js';
+import { createResponseStreamer } from './lib/response-streamer.js';
 
 /**
  * Learn Code MCP Server v0.1
@@ -189,14 +189,23 @@ class LearnCodeMCPServer {
     this.server.setRequestHandler(GetPromptRequestSchema, async (request) => {
       const { name, arguments: args } = request.params;
       
-      if (!args?.code) {
+      // Handle different argument formats from different MCP clients
+      let code: string;
+      if (args?.code) {
+        code = String(args.code);
+      } else if (typeof args === 'string') {
+        // Handle case where code is passed directly as string
+        code = args;
+      } else if (Array.isArray(args) && args.length > 0) {
+        // Handle case where code is passed as first array element
+        code = String(args[0]);
+      } else {
         throw new McpError(ErrorCode.InvalidParams, 'Code argument is required');
       }
 
-      const code = String(args.code);
-      const language = args.language ? String(args.language) : undefined;
-      const filename = args.filename ? String(args.filename) : undefined;
-      const context = args.context as WorkspaceContext | undefined;
+      const language = args?.language ? String(args.language) : undefined;
+      const filename = args?.filename ? String(args.filename) : undefined;
+      const context = args?.context as WorkspaceContext | undefined;
 
       // Apply detailed secret redaction
       const redactionResult = this.secretRedactor.getRedactionDetails(code);
@@ -331,8 +340,6 @@ class LearnCodeMCPServer {
     classification?: { construct: string; confidence: number },
     workspaceContext?: WorkspaceContext
   ): string {
-    const preferences = this.preferencesManager.getPreferences();
-    
     // Build context with workspace information
     let context = '';
     if (language) context += `Language: ${language}\n`;

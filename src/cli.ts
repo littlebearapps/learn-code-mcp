@@ -45,7 +45,7 @@ class LearnCodeCLI {
     }
 
     try {
-      const code = await this.getCodeInput(args, options);
+      const code = await this.getCodeInput(options);
       if (!code.trim()) {
         this.showUsage();
         process.exit(1);
@@ -63,9 +63,12 @@ class LearnCodeCLI {
     const options = { ...this.defaultOptions };
     let inputFile: string | undefined;
 
-    for (let i = 0; i < args.length; i++) {
-      const arg = args[i];
-      const nextArg = args[i + 1];
+    // Skip the first argument if it's 'explain' (for 'teach explain' command pattern)
+    const processArgs = args[0] === 'explain' ? args.slice(1) : args;
+
+    for (let i = 0; i < processArgs.length; i++) {
+      const arg = processArgs[i];
+      const nextArg = processArgs[i + 1];
 
       switch (arg) {
         case '--length':
@@ -125,6 +128,7 @@ class LearnCodeCLI {
         case '-h':
           this.showUsage();
           process.exit(0);
+          break;
 
         default:
           if (!arg.startsWith('-') && !inputFile) {
@@ -137,7 +141,7 @@ class LearnCodeCLI {
     return { ...options, inputFile };
   }
 
-  private async getCodeInput(args: string[], options: CLIOptions & { inputFile?: string }): Promise<string> {
+  private async getCodeInput(options: CLIOptions & { inputFile?: string }): Promise<string> {
     // If file is specified, read from file
     if (options.inputFile) {
       try {
@@ -395,9 +399,25 @@ For more information, visit: https://github.com/little-bear-apps/learn-code-mcp
 }
 
 // Main execution
-import { pathToFileURL } from 'url';
+import { realpathSync } from 'fs';
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+// Handle both direct execution and symlink execution (like npm global install)
+const isMainModule = () => {
+  try {
+    const currentFile = fileURLToPath(import.meta.url);
+    const mainFile = process.argv[1];
+    
+    // Handle symlinks by resolving to real path
+    const realMainFile = realpathSync(mainFile);
+    
+    return currentFile === mainFile || currentFile === realMainFile;
+  } catch {
+    // Fallback: assume this is main if we can't determine
+    return true;
+  }
+};
+
+if (isMainModule()) {
   const cli = new LearnCodeCLI();
   cli.run().catch((error) => {
     console.error('CLI failed:', error.message);
